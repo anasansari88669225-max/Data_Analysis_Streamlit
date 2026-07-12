@@ -12,7 +12,7 @@ API_KEY = "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"
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="AI Data Analyst Pro", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
 
-# --- 🎨 PROFESSIONAL DARK THEME WITH ANIMATIONS ---
+# --- 🎨 PROFESSIONAL DARK THEME ---
 st.markdown("""
     <style>
     /* === COLOR VARIABLES === */
@@ -33,7 +33,7 @@ st.markdown("""
         --chart-grid: #374151;
     }
     
-    /* === GLOBAL ANIMATIONS === */
+    /* === ANIMATIONS === */
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
@@ -54,42 +54,15 @@ st.markdown("""
         50% { transform: scale(1.05); opacity: 0.9; }
     }
     
-    @keyframes glow {
-        0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
-        50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.6); }
-    }
-    
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-10px); }
-    }
-    
-    @keyframes shimmer {
-        0% { background-position: -1000px 0; }
-        100% { background-position: 1000px 0; }
-    }
-    
-    @keyframes bounceIn {
-        0% { opacity: 0; transform: scale(0.3); }
-        50% { opacity: 1; transform: scale(1.05); }
-        70% { transform: scale(0.9); }
-        100% { transform: scale(1); }
-    }
-    
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
     }
     
     @keyframes gradientShift {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
-    }
-    
-    @keyframes borderGlow {
-        0%, 100% { border-color: var(--primary); }
-        50% { border-color: var(--secondary); }
     }
     
     @keyframes typing {
@@ -111,26 +84,17 @@ st.markdown("""
         color: #F8FAFC;
     }
     
-    .stApp > header {
-        background: transparent;
-    }
-    
     /* === SIDEBAR === */
     [data-testid="stSidebar"] {
         background-color: #1E293B !important;
         border-right: 1px solid #374151;
     }
     
-    [data-testid="stSidebarContent"] {
-        background-color: #1E293B !important;
-    }
-    
     [data-testid="stSidebar"] h1,
     [data-testid="stSidebar"] h2,
     [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] p,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] span {
+    [data-testid="stSidebar"] label {
         color: #F8FAFC !important;
     }
     
@@ -178,7 +142,6 @@ st.markdown("""
         border-radius: 12px;
         padding: 16px;
         transition: all 0.3s ease;
-        animation: bounceIn 0.6s ease-out;
         position: relative;
         overflow: hidden;
     }
@@ -436,18 +399,10 @@ st.markdown("""
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     
-    .stDataFrame [data-testid="stDataFrameResizable"] {
-        border: none !important;
-    }
-    
     /* === ALERTS === */
     .stAlert {
         border-radius: 12px;
         border: 1px solid;
-        background: #111827 !important;
-    }
-    
-    .stAlert[data-baseweb="notification"] {
         background: #111827 !important;
     }
     
@@ -644,54 +599,6 @@ st.markdown("""
         margin: 24px 0;
     }
     
-    /* === PLOTLY CHARTS === */
-    .js-plotly-plot .plotly {
-        background: #111827 !important;
-        border-radius: 12px;
-    }
-    
-    /* === CHAT INPUT === */
-    .chat-input-container {
-        background: #111827;
-        border: 1px solid #1E293B;
-        border-radius: 16px;
-        padding: 20px;
-        margin-top: 16px;
-    }
-    
-    /* === SUGGESTION BUTTONS === */
-    .suggestion-btn {
-        background: #1E293B !important;
-        border: 1px solid #374151 !important;
-        color: #CBD5E1 !important;
-        border-radius: 20px !important;
-        padding: 8px 16px !important;
-        font-size: 0.9rem !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    .suggestion-btn:hover {
-        background: #7C3AED !important;
-        border-color: #7C3AED !important;
-        color: #F8FAFC !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
-    }
-    
-    /* === EXPANDER === */
-    .streamlit-expanderHeader {
-        background: #111827 !important;
-        border: 1px solid #1E293B !important;
-        border-radius: 8px !important;
-        color: #F8FAFC !important;
-        font-weight: 600 !important;
-    }
-    
-    .streamlit-expanderHeader:hover {
-        background: #1E293B !important;
-        border-color: #7C3AED !important;
-    }
-    
     /* === API STATUS BADGE === */
     .api-badge {
         display: inline-flex;
@@ -715,10 +622,46 @@ st.markdown("""
         animation: pulse 2s infinite;
     }
     
-    /* === LOADING ANIMATION === */
-    .stSpinner > div {
-        border-top-color: #7C3AED !important;
-        border-right-color: #06B6D4 !important;
+    /* === DATA QUALITY SCORE === */
+    .quality-score {
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        margin: 16px 0;
+    }
+    
+    .quality-score h3 {
+        color: white !important;
+        margin: 0 0 10px 0;
+    }
+    
+    .quality-score .score {
+        font-size: 3rem;
+        font-weight: 800;
+        color: white;
+    }
+    
+    /* === CORRELATION HEATMAP === */
+    .heatmap-container {
+        background: #111827;
+        border-radius: 12px;
+        padding: 16px;
+        border: 1px solid #1E293B;
+    }
+    
+    /* === EXPANDER === */
+    .streamlit-expanderHeader {
+        background: #111827 !important;
+        border: 1px solid #1E293B !important;
+        border-radius: 8px !important;
+        color: #F8FAFC !important;
+        font-weight: 600 !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: #1E293B !important;
+        border-color: #7C3AED !important;
     }
     
     /* === DOWNLOAD BUTTON === */
@@ -745,32 +688,8 @@ if "chart_explanation" not in st.session_state:
     st.session_state.chart_explanation = None
 if "chat_messages" not in st.session_state: 
     st.session_state.chat_messages = [
-        {"role": "ai", "content": "👋 Assalam o Alaikum! Main aapka AI Data Analyst hoon. Apna dataset upload karein aur mujhse koi bhi sawaal poochein - main aapki puri madad karunga! 🚀"}
+        {"role": "ai", "content": "👋 Assalam o Alaikum! Main aapka AI Data Analyst hoon. Dataset upload karein aur koi bhi sawaal poochein! 🚀"}
     ]
-
-# --- SIDEBAR ---
-with st.sidebar:
-    st.markdown('<h1 style="text-align: center; font-size: 2rem;">🧠 AI Data Pro</h1>', unsafe_allow_html=True)
-    st.markdown("---")
-    
-    # API Status Badge
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown('<div class="api-badge">API Active</div>', unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    st.markdown("### 📁 Upload Dataset")
-    uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"], label_visibility="collapsed")
-    
-    if uploaded_file:
-        try:
-            with st.spinner("🔄 Loading dataset..."):
-                time.sleep(0.5)
-                st.session_state.df = pd.read_csv(uploaded_file)
-                st.success("✅ Dataset loaded successfully!")
-        except Exception as e:
-            st.error(f"❌ Error: {e}")
 
 # --- HELPER FUNCTIONS ---
 def get_context(df):
@@ -790,13 +709,26 @@ def get_context(df):
     buffer.write(f"Sample Data:\n{df.head(3).to_string()}")
     return buffer.getvalue()
 
+def calculate_data_quality(df):
+    """Data quality score calculate karta hai"""
+    total_cells = df.shape[0] * df.shape[1]
+    missing_cells = df.isnull().sum().sum()
+    duplicate_rows = df.duplicated().sum()
+    
+    missing_pct = (missing_cells / total_cells) * 100 if total_cells > 0 else 0
+    duplicate_pct = (duplicate_rows / df.shape[0]) * 100 if df.shape[0] > 0 else 0
+    
+    # Quality score calculation
+    quality_score = 100 - (missing_pct * 0.5) - (duplicate_pct * 0.3)
+    return max(0, min(100, quality_score))
+
 def call_ai(prompt):
     try:
         client = Groq(api_key=API_KEY)
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile",
             messages=[
-                {"role": "system", "content": "You are an expert business data analyst. Provide clear, concise, and accurate answers based ONLY on the provided data context. Be friendly and helpful."},
+                {"role": "system", "content": "You are an expert business data analyst. Provide clear, concise, and accurate answers based ONLY on the provided data context. Be friendly and helpful. Respond in the same language as the user."},
                 {"role": "user", "content": prompt}
             ],
             temperature=0.3
@@ -804,6 +736,28 @@ def call_ai(prompt):
         return response.choices[0].message.content
     except Exception as e:
         return f"❌ API Error: {str(e)}"
+
+# --- SIDEBAR ---
+with st.sidebar:
+    st.markdown('<h1 style="text-align: center; font-size: 2rem;">🧠 AI Data Pro</h1>', unsafe_allow_html=True)
+    st.markdown("---")
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown('<div class="api-badge">API Active</div>', unsafe_allow_html=True)
+    
+    st.markdown("---")
+    st.markdown("### 📁 Upload Dataset")
+    uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"], label_visibility="collapsed")
+    
+    if uploaded_file:
+        try:
+            with st.spinner("🔄 Loading..."):
+                time.sleep(0.5)
+                st.session_state.df = pd.read_csv(uploaded_file)
+                st.success("✅ Dataset loaded!")
+        except Exception as e:
+            st.error(f"❌ Error: {e}")
 
 # --- MAIN APP ---
 if st.session_state.df is not None:
@@ -813,10 +767,14 @@ if st.session_state.df is not None:
     st.markdown('<h1>🧠 AI Data Analyst Pro</h1>', unsafe_allow_html=True)
     st.markdown('<p style="color: #94A3B8; font-size: 1.1rem; margin-bottom: 2rem;">Your Intelligent Data Analysis Companion</p>', unsafe_allow_html=True)
     
-    tab1, tab2, tab3 = st.tabs(["📊 Dataset Overview", "📈 Analysis & Charts", "💬 AI Chatbot"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Analysis", "🔗 Correlations", "💬 AI Chat"])
     
     # === TAB 1: DATASET OVERVIEW ===
     with tab1:
+        # Data Quality Score
+        quality_score = calculate_data_quality(df)
+        st.markdown(f'<div class="quality-score"><h3>📊 Data Quality Score</h3><div class="score">{quality_score:.1f}%</div></div>', unsafe_allow_html=True)
+        
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("📊 Dataset Summary")
         
@@ -833,7 +791,7 @@ if st.session_state.df is not None:
         st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        with st.expander("🔍 View Full Dataset", expanded=False):
+        with st.expander("🔍 View Full Dataset"):
             st.dataframe(df, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
@@ -864,7 +822,7 @@ if st.session_state.df is not None:
         st.header("🎨 Interactive Visualization")
         
         c1, c2, c3 = st.columns(3)
-        chart_type = c1.selectbox("Chart Type", ["Bar Chart", "Line Chart", "Scatter Plot", "Pie Chart", "Histogram"])
+        chart_type = c1.selectbox("Chart Type", ["Bar Chart", "Line Chart", "Scatter Plot", "Pie Chart", "Histogram", "Box Plot"])
         cols = df.columns.tolist()
         x_col = c2.selectbox("X-Axis", cols)
         y_col = c3.selectbox("Y-Axis", ["None"] + cols)
@@ -881,6 +839,8 @@ if st.session_state.df is not None:
                 fig = px.pie(df, names=x_col, title=f"Distribution of {x_col}")
             elif chart_type == "Histogram": 
                 fig = px.histogram(df, x=x_col, title=f"Distribution of {x_col}")
+            elif chart_type == "Box Plot" and y_col != "None":
+                fig = px.box(df, x=x_col, y=y_col, title=f"{y_col} by {x_col}")
             
             if fig:
                 fig.update_layout(
@@ -898,7 +858,7 @@ if st.session_state.df is not None:
                 
                 if st.button("✨ Explain with AI"):
                     with st.spinner("🤖 AI analyzing..."):
-                        prompt = f"Dataset Context:\n{context}\n\nA {chart_type} was generated with X: '{x_col}' and Y: '{y_col}'. Provide insights."
+                        prompt = f"Dataset Context:\n{context}\n\nA {chart_type} was generated with X: '{x_col}' and Y: '{y_col}'. Provide key insights and business implications."
                         st.session_state.chart_explanation = call_ai(prompt)
                 
                 if st.session_state.chart_explanation:
@@ -912,11 +872,45 @@ if st.session_state.df is not None:
             st.error(f"❌ Error: {e}")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # === TAB 3: AI CHATBOT ===
+    # === TAB 3: CORRELATIONS ===
     with tab3:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
+        st.header("🔗 Correlation Analysis")
+        
+        num_cols = df.select_dtypes(include=np.number).columns
+        if len(num_cols) > 1:
+            st.markdown("### Correlation Heatmap")
+            corr_matrix = df[num_cols].corr()
+            
+            fig_corr = px.imshow(
+                corr_matrix,
+                text_auto=".2f",
+                aspect="auto",
+                color_continuous_scale="RdBu_r",
+                title="Feature Correlations"
+            )
+            fig_corr.update_layout(
+                plot_bgcolor='#111827',
+                paper_bgcolor='#111827',
+                font=dict(color='#F8FAFC')
+            )
+            st.plotly_chart(fig_corr, use_container_width=True)
+            
+            st.markdown("### 🤖 AI Correlation Insights")
+            if st.button("🔍 Analyze Correlations"):
+                with st.spinner("Analyzing..."):
+                    prompt = f"Dataset Context:\n{context}\n\nCorrelation Matrix:\n{corr_matrix.to_string()}\n\nAnalyze the strongest positive and negative correlations. What do they mean for the business?"
+                    st.info(call_ai(prompt))
+        else:
+            st.info("ℹ️ Need at least 2 numeric columns for correlation analysis.")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    # === TAB 4: AI CHATBOT ===
+    with tab4:
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("💬 AI Data Chatbot")
-        st.caption("🤖 ChatGPT-style assistant - Ask anything about your data!")
+        st.caption("🤖 Ask anything about your data!")
         st.markdown('</div>', unsafe_allow_html=True)
         
         # Chat Display
@@ -929,38 +923,12 @@ if st.session_state.df is not None:
                     st.markdown(f'<div class="ai-message">{message["content"]}</div>', unsafe_allow_html=True)
         
         # Chat Input
-        st.markdown('<div class="chat-input-container">', unsafe_allow_html=True)
+        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         user_input = st.text_input("Ask a question", placeholder="💭 Type your question here...", label_visibility="collapsed", key="chat_input")
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            send_button = st.button("🚀 Send Message", use_container_width=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        # Quick Suggestions
-        st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("#### 💡 Quick Questions")
-        sug1, sug2, sug3, sug4 = st.columns(4)
-        with sug1:
-            if st.button("📊 Top Products", use_container_width=True):
-                user_input = "Top 5 products kya hain?"
-                send_button = True
-                st.session_state.chat_input = user_input
-        with sug2:
-            if st.button("📈 Sales Trend", use_container_width=True):
-                user_input = "Sales ka trend kya hai?"
-                send_button = True
-                st.session_state.chat_input = user_input
-        with sug3:
-            if st.button("🏆 Best Customer", use_container_width=True):
-                user_input = "Best customer kaunsa hai?"
-                send_button = True
-                st.session_state.chat_input = user_input
-        with sug4:
-            if st.button("📉 Missing Data", use_container_width=True):
-                user_input = "Missing data ke baare mein batao"
-                send_button = True
-                st.session_state.chat_input = user_input
+            send_button = st.button("🚀 Send", use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
         
         # Process Message
@@ -974,11 +942,23 @@ if st.session_state.df is not None:
 
 User Question: {user_input}
 
-Provide a clear, accurate answer based on the dataset. Be conversational."""
+Provide a clear, accurate answer based on the dataset. Be conversational and helpful."""
                 ai_response = call_ai(prompt)
                 st.session_state.chat_messages.append({"role": "ai", "content": ai_response})
             
             st.rerun()
+    
+    # Download Button
+    st.markdown("---")
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.download_button(
+            "📥 Download Dataset",
+            df.to_csv(index=False).encode("utf-8"),
+            "dataset.csv",
+            "text/csv",
+            use_container_width=True
+        )
 
 else:
     # Welcome Screen
@@ -1013,22 +993,11 @@ else:
     with col3:
         st.markdown("""
         <div class="feature-card">
-            <div class="feature-icon">🎨</div>
-            <div class="feature-title">Premium UI</div>
-            <div class="feature-desc">Professional dark theme with smooth animations</div>
+            <div class="feature-icon">🔗</div>
+            <div class="feature-title">Correlations</div>
+            <div class="feature-desc">Discover hidden patterns and relationships in data</div>
         </div>
         """, unsafe_allow_html=True)
     
     st.markdown("---")
     st.info("👈 Please upload a CSV file from the sidebar to begin!")
-
-# Download Button
-if st.session_state.df is not None:
-    st.markdown("---")
-    st.download_button(
-        "📥 Download Dataset",
-        st.session_state.df.to_csv(index=False).encode("utf-8"),
-        "dataset.csv",
-        "text/csv",
-        use_container_width=True
-    )
