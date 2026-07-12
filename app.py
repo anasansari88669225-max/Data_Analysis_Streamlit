@@ -5,6 +5,9 @@ import plotly.express as px
 from groq import Groq
 import io
 
+# --- 🔥 PERMANENT API KEY (Yahan apni key hardcode kar dein) ---
+API_KEY = "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"
+
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="AI Data Analyst", page_icon="📊", layout="wide")
 
@@ -28,12 +31,9 @@ with st.sidebar:
     st.title("📊 AI Data Analyst")
     st.markdown("---")
     
-    # 🔥 API PROBLEM FIXED: Sidebar input instead of broken os.environ.get()
+    # 🔥 API PERMANENTLY CONFIGURED
     st.header("🔑 API Configuration")
-    st.caption("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")
-    api_key = st.text_input("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", type="password")
-    if not api_key:
-        st.warning("AI features ke liye API Key zaroori hai.")
+    st.success("✅ API Key is permanently configured! No need to enter manually.")
     
     st.markdown("---")
     st.header("📁 Upload Dataset")
@@ -66,11 +66,9 @@ def get_context(df):
     return buffer.getvalue()
 
 def call_ai(prompt):
-    """Groq API ko call karne ka safe function"""
-    if not api_key:
-        return "⚠️ Please enter your Groq API Key in the sidebar."
+    """Groq API ko call karne ka safe function (Ab permanent API key use karega)"""
     try:
-        client = Groq(api_key=api_key)
+        client = Groq(api_key=API_KEY)
         response = client.chat.completions.create(
             model="llama-3.3-70b-versatile", # Fast aur free model
             messages=[
