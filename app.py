@@ -12,16 +12,28 @@ API_KEY = "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"
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="AI Data Analyst Pro", page_icon="🧠", layout="wide", initial_sidebar_state="expanded")
 
-# --- 🎨 PREMIUM COLORFUL UI WITH ANIMATIONS ---
+# --- 🎨 PROFESSIONAL DARK THEME WITH ANIMATIONS ---
 st.markdown("""
     <style>
-    /* === GLOBAL ANIMATIONS === */
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    /* === COLOR VARIABLES === */
+    :root {
+        --bg-main: #0F172A;
+        --bg-sidebar: #1E293B;
+        --bg-card: #111827;
+        --primary: #7C3AED;
+        --primary-hover: #8B5CF6;
+        --secondary: #06B6D4;
+        --success: #22C55E;
+        --warning: #F59E0B;
+        --error: #EF4444;
+        --text-main: #F8FAFC;
+        --text-secondary: #CBD5E1;
+        --text-muted: #94A3B8;
+        --border: #1E293B;
+        --chart-grid: #374151;
     }
     
+    /* === GLOBAL ANIMATIONS === */
     @keyframes fadeInUp {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
@@ -38,13 +50,13 @@ st.markdown("""
     }
     
     @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.05); }
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.9; }
     }
     
     @keyframes glow {
-        0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.5); }
-        50% { box-shadow: 0 0 40px rgba(255, 20, 147, 0.8); }
+        0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.3); }
+        50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.6); }
     }
     
     @keyframes float {
@@ -57,20 +69,6 @@ st.markdown("""
         100% { background-position: 1000px 0; }
     }
     
-    @keyframes typewriter {
-        from { width: 0; }
-        to { width: 100%; }
-    }
-    
-    @keyframes blink {
-        50% { border-color: transparent; }
-    }
-    
-    @keyframes rotate {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
     @keyframes bounceIn {
         0% { opacity: 0; transform: scale(0.3); }
         50% { opacity: 1; transform: scale(1.05); }
@@ -78,9 +76,25 @@ st.markdown("""
         100% { transform: scale(1); }
     }
     
-    @keyframes ripple {
-        0% { transform: scale(0); opacity: 1; }
-        100% { transform: scale(4); opacity: 0; }
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    @keyframes borderGlow {
+        0%, 100% { border-color: var(--primary); }
+        50% { border-color: var(--secondary); }
+    }
+    
+    @keyframes typing {
+        0%, 60%, 100% { transform: translateY(0); }
+        30% { transform: translateY(-10px); }
     }
 
     /* === MAIN CONTAINER === */
@@ -88,50 +102,83 @@ st.markdown("""
         padding-top: 2rem;
         padding-bottom: 2rem;
         max-width: 1400px;
-        animation: fadeInUp 1s ease-out;
-    }
-    
-    /* === ANIMATED BACKGROUND === */
-    .stApp {
-        background: linear-gradient(135deg, 
-            #667eea 0%, 
-            #764ba2 25%, 
-            #f093fb 50%, 
-            #4facfe 75%, 
-            #667eea 100%);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-    }
-    
-    /* === GLASSMORPHISM EFFECT === */
-    .glass-card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-        padding: 25px;
-        margin: 15px 0;
         animation: fadeInUp 0.8s ease-out;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    /* === MAIN BACKGROUND === */
+    .stApp {
+        background-color: #0F172A;
+        color: #F8FAFC;
+    }
+    
+    .stApp > header {
+        background: transparent;
+    }
+    
+    /* === SIDEBAR === */
+    [data-testid="stSidebar"] {
+        background-color: #1E293B !important;
+        border-right: 1px solid #374151;
+    }
+    
+    [data-testid="stSidebarContent"] {
+        background-color: #1E293B !important;
+    }
+    
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] span {
+        color: #F8FAFC !important;
+    }
+    
+    [data-testid="stSidebar"] .stCaption,
+    [data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+        color: #94A3B8 !important;
+    }
+    
+    /* === GLASS CARD === */
+    .glass-card {
+        background: #111827;
+        border: 1px solid #1E293B;
+        border-radius: 16px;
+        padding: 24px;
+        margin: 16px 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        animation: fadeInUp 0.6s ease-out;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .glass-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #7C3AED, #06B6D4, #7C3AED);
+        background-size: 200% 100%;
+        animation: gradientShift 3s ease infinite;
     }
     
     .glass-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-color: #7C3AED;
+        box-shadow: 0 8px 30px rgba(124, 58, 237, 0.2);
+        transform: translateY(-2px);
     }
     
-    /* === COLORFUL METRICS === */
+    /* === METRICS === */
     .stMetric {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        animation: bounceIn 0.6s ease-out;
+        background: #111827;
+        border: 1px solid #1E293B;
+        border-radius: 12px;
+        padding: 16px;
         transition: all 0.3s ease;
+        animation: bounceIn 0.6s ease-out;
         position: relative;
         overflow: hidden;
     }
@@ -139,249 +186,238 @@ st.markdown("""
     .stMetric::before {
         content: '';
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-        transform: rotate(45deg);
-        animation: shimmer 3s infinite;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #7C3AED, #06B6D4);
     }
     
     .stMetric:hover {
-        transform: scale(1.05) rotate(1deg);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        border-color: #7C3AED;
+        box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        transform: translateY(-3px);
     }
     
     .stMetric label {
-        color: white !important;
-        font-weight: 600 !important;
-        font-size: 1.1rem !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        color: #CBD5E1 !important;
+        font-size: 0.9rem !important;
+        font-weight: 500 !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     
-    .stMetric .metric-value {
-        color: white !important;
-        font-size: 2.5rem !important;
+    .stMetric [data-testid="stMetricValue"] {
+        color: #F8FAFC !important;
+        font-size: 2rem !important;
         font-weight: 700 !important;
-        text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
     
     /* === HEADERS === */
     h1 {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        font-size: 3.5rem !important;
-        font-weight: 900 !important;
-        text-align: center;
-        margin-bottom: 2rem;
-        animation: fadeInUp 1s ease-out, float 3s ease-in-out infinite;
-        text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        font-size: 3rem !important;
+        font-weight: 800 !important;
+        margin-bottom: 1.5rem;
+        animation: fadeInUp 0.8s ease-out;
     }
     
     h2 {
-        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        font-size: 2.5rem !important;
-        font-weight: 800 !important;
+        color: #F8FAFC !important;
+        font-size: 2rem !important;
+        font-weight: 700 !important;
         margin-top: 1.5rem;
         margin-bottom: 1rem;
-        animation: slideInLeft 0.8s ease-out;
+        position: relative;
+        padding-left: 16px;
+        animation: slideInLeft 0.6s ease-out;
+    }
+    
+    h2::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 80%;
+        background: linear-gradient(180deg, #7C3AED, #06B6D4);
+        border-radius: 2px;
     }
     
     h3 {
-        color: #ffffff !important;
-        font-size: 1.8rem !important;
-        font-weight: 700 !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        animation: slideInRight 0.8s ease-out;
+        color: #CBD5E1 !important;
+        font-size: 1.5rem !important;
+        font-weight: 600 !important;
+        animation: slideInRight 0.6s ease-out;
+    }
+    
+    p, span, div {
+        color: #F8FAFC;
     }
     
     /* === BUTTONS === */
     .stButton > button {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white !important;
-        border: 2px solid rgba(255, 255, 255, 0.5);
-        border-radius: 50px;
-        padding: 12px 35px;
-        font-weight: 700;
-        font-size: 1.1rem;
-        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
+        color: #F8FAFC !important;
+        border: none;
+        border-radius: 10px;
+        padding: 10px 24px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
+        letter-spacing: 0.3px;
     }
     
     .stButton > button::before {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
     }
     
     .stButton > button:hover::before {
-        width: 300px;
-        height: 300px;
+        left: 100%;
     }
     
     .stButton > button:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 8px 25px rgba(245, 87, 108, 0.6);
-        border: 2px solid rgba(255, 255, 255, 0.8);
+        background: linear-gradient(135deg, #8B5CF6 0%, #22D3EE 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.4);
     }
     
     .stButton > button:active {
-        transform: translateY(0) scale(0.98);
-    }
-    
-    /* === SIDEBAR === */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, 
-            rgba(102, 126, 234, 0.95) 0%, 
-            rgba(118, 75, 162, 0.95) 50%, 
-            rgba(240, 147, 251, 0.95) 100%);
-        backdrop-filter: blur(20px);
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
-    }
-    
-    [data-testid="stSidebar"] h1,
-    [data-testid="stSidebar"] h2,
-    [data-testid="stSidebar"] h3,
-    [data-testid="stSidebar"] label,
-    [data-testid="stSidebar"] .stCaption {
-        color: white !important;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    
-    [data-testid="stSidebar"] .stAlert {
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        border-radius: 15px;
-        animation: glow 2s ease-in-out infinite;
+        transform: translateY(0);
     }
     
     /* === TABS === */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 15px;
-        background: rgba(255, 255, 255, 0.1);
-        padding: 10px;
-        border-radius: 20px;
-        backdrop-filter: blur(10px);
-        margin-bottom: 20px;
+        gap: 8px;
+        background: #111827;
+        padding: 8px;
+        border-radius: 12px;
+        border: 1px solid #1E293B;
+        margin-bottom: 24px;
     }
     
     .stTabs [data-baseweb="tab"] {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 15px;
-        padding: 12px 25px;
-        color: white !important;
-        font-weight: 700;
-        font-size: 1.1rem;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        transition: all 0.4s ease;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background: transparent;
+        border-radius: 8px;
+        padding: 10px 20px;
+        color: #94A3B8 !important;
+        font-weight: 600;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
     }
     
     .stTabs [data-baseweb="tab"]:hover {
-        transform: translateY(-3px) scale(1.05);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: #1E293B;
+        color: #F8FAFC !important;
+        border-color: #374151;
     }
     
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%) !important;
-        animation: pulse 2s ease-in-out infinite;
-        border: 2px solid white;
-        box-shadow: 0 0 30px rgba(240, 147, 251, 0.8);
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%) !important;
+        color: #F8FAFC !important;
+        border: 1px solid transparent !important;
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
     }
     
     /* === CHATBOT STYLES === */
     .chat-container {
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(20px);
-        border-radius: 25px;
-        padding: 25px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-        margin: 20px 0;
-        animation: fadeInUp 0.8s ease-out;
+        background: #111827;
+        border-radius: 16px;
+        padding: 20px;
+        border: 1px solid #1E293B;
+        max-height: 500px;
+        overflow-y: auto;
+        margin-bottom: 16px;
     }
     
     .user-message {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px 20px;
-        border-radius: 20px 20px 5px 20px;
-        margin: 15px 0;
-        margin-left: 20%;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        animation: slideInRight 0.5s ease-out;
-        font-size: 1.05rem;
+        background: linear-gradient(135deg, #7C3AED 0%, #8B5CF6 100%);
+        color: #F8FAFC;
+        padding: 14px 18px;
+        border-radius: 16px 16px 4px 16px;
+        margin: 12px 0;
+        margin-left: 15%;
+        box-shadow: 0 2px 10px rgba(124, 58, 237, 0.3);
+        animation: slideInRight 0.4s ease-out;
+        font-size: 0.95rem;
         line-height: 1.6;
         position: relative;
-        overflow: hidden;
     }
     
-    .user-message::before {
-        content: '👤';
+    .user-message::after {
+        content: '';
         position: absolute;
-        left: -35px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.5rem;
+        top: 12px;
+        right: -8px;
+        width: 0;
+        height: 0;
+        border: 8px solid transparent;
+        border-left-color: #8B5CF6;
+        border-right: 0;
     }
     
     .ai-message {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: white;
-        padding: 15px 20px;
-        border-radius: 20px 20px 20px 5px;
-        margin: 15px 0;
-        margin-right: 20%;
-        box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
-        animation: slideInLeft 0.5s ease-out;
-        font-size: 1.05rem;
+        background: #1E293B;
+        color: #F8FAFC;
+        padding: 14px 18px;
+        border-radius: 16px 16px 16px 4px;
+        margin: 12px 0;
+        margin-right: 15%;
+        border: 1px solid #374151;
+        border-left: 3px solid #06B6D4;
+        box-shadow: 0 2px 10px rgba(6, 182, 212, 0.1);
+        animation: slideInLeft 0.4s ease-out;
+        font-size: 0.95rem;
         line-height: 1.6;
         position: relative;
-        overflow: hidden;
     }
     
-    .ai-message::before {
-        content: '🤖';
+    .ai-message::after {
+        content: '';
         position: absolute;
-        right: -35px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.5rem;
+        top: 12px;
+        left: -8px;
+        width: 0;
+        height: 0;
+        border: 8px solid transparent;
+        border-right-color: #06B6D4;
+        border-left: 0;
     }
     
     .typing-indicator {
-        display: inline-block;
-        padding: 10px 15px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        margin: 10px 0;
-        animation: pulse 1.5s ease-in-out infinite;
+        display: inline-flex;
+        gap: 4px;
+        padding: 12px 16px;
+        background: #1E293B;
+        border-radius: 16px;
+        border: 1px solid #374151;
+        margin: 8px 0;
     }
     
     .typing-indicator span {
-        display: inline-block;
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: white;
-        margin: 0 3px;
-        animation: float 1.4s ease-in-out infinite;
+        background: #06B6D4;
+        animation: typing 1.4s ease-in-out infinite;
     }
     
     .typing-indicator span:nth-child(2) {
@@ -394,211 +430,319 @@ st.markdown("""
     
     /* === DATAFRAME === */
     .stDataFrame {
-        border-radius: 15px;
+        border: 1px solid #1E293B !important;
+        border-radius: 12px !important;
         overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        animation: fadeInUp 0.8s ease-out;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .stDataFrame [data-testid="stDataFrameResizable"] {
+        border: none !important;
     }
     
     /* === ALERTS === */
     .stAlert {
-        border-radius: 15px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        animation: fadeInUp 0.6s ease-out;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        border: 1px solid;
+        background: #111827 !important;
+    }
+    
+    .stAlert[data-baseweb="notification"] {
+        background: #111827 !important;
+    }
+    
+    .stSuccess {
+        border-color: #22C55E !important;
+        color: #22C55E !important;
+        background: rgba(34, 197, 94, 0.1) !important;
+    }
+    
+    .stWarning {
+        border-color: #F59E0B !important;
+        color: #F59E0B !important;
+        background: rgba(245, 158, 11, 0.1) !important;
+    }
+    
+    .stError {
+        border-color: #EF4444 !important;
+        color: #EF4444 !important;
+        background: rgba(239, 68, 68, 0.1) !important;
+    }
+    
+    .stInfo {
+        border-color: #06B6D4 !important;
+        color: #06B6D4 !important;
+        background: rgba(6, 182, 212, 0.1) !important;
     }
     
     /* === SELECTBOX === */
     .stSelectbox > div > div {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border: 2px solid rgba(255, 255, 255, 0.4) !important;
-        border-radius: 12px !important;
-        color: white !important;
-        transition: all 0.3s ease;
+        background: #111827 !important;
+        border: 1px solid #1E293B !important;
+        border-radius: 8px !important;
+        color: #F8FAFC !important;
     }
     
     .stSelectbox > div > div:hover {
-        border: 2px solid rgba(255, 255, 255, 0.8) !important;
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        border-color: #7C3AED !important;
+    }
+    
+    .stSelectbox label {
+        color: #CBD5E1 !important;
     }
     
     /* === TEXT INPUT === */
-    .stTextInput > div > div > input,
-    .stTextArea > div > div > textarea {
-        background: rgba(255, 255, 255, 0.2) !important;
-        border: 2px solid rgba(255, 255, 255, 0.4) !important;
-        border-radius: 12px !important;
-        color: white !important;
+    .stTextInput input,
+    .stTextArea textarea {
+        background: #111827 !important;
+        border: 1px solid #1E293B !important;
+        border-radius: 8px !important;
+        color: #F8FAFC !important;
         transition: all 0.3s ease;
     }
     
-    .stTextInput > div > div > input:focus,
-    .stTextArea > div > div > textarea:focus {
-        border: 2px solid rgba(255, 255, 255, 0.9) !important;
-        box-shadow: 0 0 25px rgba(255, 255, 255, 0.4) !important;
+    .stTextInput input:focus,
+    .stTextArea textarea:focus {
+        border-color: #7C3AED !important;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15) !important;
+        outline: none !important;
+    }
+    
+    .stTextInput label,
+    .stTextArea label {
+        color: #CBD5E1 !important;
     }
     
     /* === FILE UPLOADER === */
     .stFileUploader {
-        background: rgba(255, 255, 255, 0.15);
-        border: 2px dashed rgba(255, 255, 255, 0.5);
-        border-radius: 15px;
-        padding: 30px;
-        text-align: center;
+        background: #111827;
+        border: 2px dashed #374151;
+        border-radius: 12px;
+        padding: 24px;
         transition: all 0.3s ease;
-        animation: pulse 3s ease-in-out infinite;
     }
     
     .stFileUploader:hover {
-        border: 2px dashed rgba(255, 255, 255, 0.9);
-        background: rgba(255, 255, 255, 0.25);
-        transform: scale(1.02);
+        border-color: #7C3AED;
+        background: rgba(124, 58, 237, 0.05);
+    }
+    
+    .stFileUploader label {
+        color: #CBD5E1 !important;
     }
     
     /* === SCROLLBAR === */
     ::-webkit-scrollbar {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
     }
     
     ::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+        background: #0F172A;
     }
     
     ::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 10px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: #374151;
+        border-radius: 5px;
+        border: 2px solid #0F172A;
     }
     
     ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        background: #7C3AED;
     }
     
     /* === WELCOME SCREEN === */
     .welcome-container {
         text-align: center;
         padding: 60px 20px;
-        animation: fadeInUp 1s ease-out;
+        animation: fadeInUp 0.8s ease-out;
     }
     
     .welcome-emoji {
-        font-size: 6rem;
+        font-size: 5rem;
         animation: float 3s ease-in-out infinite;
         display: inline-block;
+        filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.5));
     }
     
     .welcome-title {
-        font-size: 4rem;
-        font-weight: 900;
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
+        font-size: 3.5rem;
+        font-weight: 800;
+        background: linear-gradient(135deg, #7C3AED 0%, #06B6D4 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin: 30px 0;
-        text-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
+        margin: 24px 0;
     }
     
     .welcome-subtitle {
-        font-size: 1.5rem;
-        color: white;
-        margin-bottom: 40px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* === LOADING SPINNER === */
-    .custom-spinner {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 30px;
-    }
-    
-    .spinner-ring {
-        width: 60px;
-        height: 60px;
-        border: 5px solid rgba(255, 255, 255, 0.3);
-        border-top: 5px solid white;
-        border-radius: 50%;
-        animation: rotate 1.5s linear infinite;
-    }
-    
-    /* === CHAT INPUT === */
-    .chat-input-container {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(20px);
-        border-radius: 20px;
-        padding: 20px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        margin-top: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        font-size: 1.25rem;
+        color: #94A3B8;
+        margin-bottom: 32px;
     }
     
     /* === FEATURE CARDS === */
     .feature-card {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
-        backdrop-filter: blur(15px);
-        border-radius: 20px;
-        padding: 30px;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        background: #111827;
+        border: 1px solid #1E293B;
+        border-radius: 16px;
+        padding: 32px 24px;
         text-align: center;
-        transition: all 0.4s ease;
-        animation: fadeInUp 0.8s ease-out;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        animation: fadeInUp 0.6s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #7C3AED, #06B6D4);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+    
+    .feature-card:hover::before {
+        transform: scaleX(1);
     }
     
     .feature-card:hover {
-        transform: translateY(-10px) scale(1.03);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-        border: 2px solid rgba(255, 255, 255, 0.7);
+        border-color: #7C3AED;
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(124, 58, 237, 0.2);
     }
     
     .feature-icon {
-        font-size: 4rem;
-        margin-bottom: 15px;
+        font-size: 3.5rem;
+        margin-bottom: 16px;
         animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 0 15px rgba(124, 58, 237, 0.4));
     }
     
     .feature-title {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 700;
-        color: white;
-        margin-bottom: 10px;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        color: #F8FAFC;
+        margin-bottom: 12px;
     }
     
     .feature-desc {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 1rem;
-        line-height: 1.5;
+        color: #94A3B8;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
     
     /* === DIVIDERS === */
     hr {
         border: none;
-        height: 3px;
-        background: linear-gradient(90deg, 
-            transparent 0%, 
-            rgba(255, 255, 255, 0.5) 50%, 
-            transparent 100%);
-        margin: 30px 0;
-        animation: shimmer 3s infinite;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #374151, transparent);
+        margin: 24px 0;
     }
     
     /* === PLOTLY CHARTS === */
-    .stPlotlyChart {
+    .js-plotly-plot .plotly {
+        background: #111827 !important;
+        border-radius: 12px;
+    }
+    
+    /* === CHAT INPUT === */
+    .chat-input-container {
+        background: #111827;
+        border: 1px solid #1E293B;
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 16px;
+    }
+    
+    /* === SUGGESTION BUTTONS === */
+    .suggestion-btn {
+        background: #1E293B !important;
+        border: 1px solid #374151 !important;
+        color: #CBD5E1 !important;
+        border-radius: 20px !important;
+        padding: 8px 16px !important;
+        font-size: 0.9rem !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .suggestion-btn:hover {
+        background: #7C3AED !important;
+        border-color: #7C3AED !important;
+        color: #F8FAFC !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
+    }
+    
+    /* === EXPANDER === */
+    .streamlit-expanderHeader {
+        background: #111827 !important;
+        border: 1px solid #1E293B !important;
+        border-radius: 8px !important;
+        color: #F8FAFC !important;
+        font-weight: 600 !important;
+    }
+    
+    .streamlit-expanderHeader:hover {
+        background: #1E293B !important;
+        border-color: #7C3AED !important;
+    }
+    
+    /* === API STATUS BADGE === */
+    .api-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid #22C55E;
+        color: #22C55E;
+        padding: 8px 16px;
         border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-        animation: fadeInUp 0.8s ease-out;
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .api-badge::before {
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: #22C55E;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    
+    /* === LOADING ANIMATION === */
+    .stSpinner > div {
+        border-top-color: #7C3AED !important;
+        border-right-color: #06B6D4 !important;
+    }
+    
+    /* === DOWNLOAD BUTTON === */
+    .stDownloadButton > button {
+        background: linear-gradient(135deg, #22C55E 0%, #06B6D4 100%) !important;
+        color: #F8FAFC !important;
+        border: none !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+    }
+    
+    .stDownloadButton > button:hover {
+        background: linear-gradient(135deg, #16A34A 0%, #0891B2 100%) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3) !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
 # --- SESSION STATE ---
-if "df" not in st.session_state: st.session_state.df = None
-if "chart_explanation" not in st.session_state: st.session_state.chart_explanation = None
+if "df" not in st.session_state: 
+    st.session_state.df = None
+if "chart_explanation" not in st.session_state: 
+    st.session_state.chart_explanation = None
 if "chat_messages" not in st.session_state: 
     st.session_state.chat_messages = [
         {"role": "ai", "content": "👋 Assalam o Alaikum! Main aapka AI Data Analyst hoon. Apna dataset upload karein aur mujhse koi bhi sawaal poochein - main aapki puri madad karunga! 🚀"}
@@ -606,14 +750,18 @@ if "chat_messages" not in st.session_state:
 
 # --- SIDEBAR ---
 with st.sidebar:
-    st.markdown('<h1 style="text-align: center; animation: float 3s ease-in-out infinite;">🧠✨ AI Data Pro</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 style="text-align: center; font-size: 2rem;">🧠 AI Data Pro</h1>', unsafe_allow_html=True)
     st.markdown("---")
     
-    st.markdown('<div class="glass-card"><h3 style="color: white; text-align: center;">🔑 API Status</h3><p style="color: white; text-align: center; font-size: 1.1rem;">✅ Active & Ready</p></div>', unsafe_allow_html=True)
+    # API Status Badge
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown('<div class="api-badge">API Active</div>', unsafe_allow_html=True)
     
     st.markdown("---")
-    st.markdown('<h3 style="color: white; text-align: center;">📁 Upload Dataset</h3>', unsafe_allow_html=True)
-    uploaded_file = st.file_uploader("", type=["csv"], label_visibility="collapsed")
+    
+    st.markdown("### 📁 Upload Dataset")
+    uploaded_file = st.file_uploader("Choose a CSV file", type=["csv"], label_visibility="collapsed")
     
     if uploaded_file:
         try:
@@ -622,11 +770,10 @@ with st.sidebar:
                 st.session_state.df = pd.read_csv(uploaded_file)
                 st.success("✅ Dataset loaded successfully!")
         except Exception as e:
-            st.error(f"❌ Error loading file: {e}")
+            st.error(f"❌ Error: {e}")
 
 # --- HELPER FUNCTIONS ---
 def get_context(df):
-    """Dataset ka summary AI ko bhejne ke liye"""
     buffer = io.StringIO()
     buffer.write(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}\n")
     buffer.write(f"Columns: {', '.join(df.columns)}\n")
@@ -644,7 +791,6 @@ def get_context(df):
     return buffer.getvalue()
 
 def call_ai(prompt):
-    """Groq API ko call karne ka safe function"""
     try:
         client = Groq(api_key=API_KEY)
         response = client.chat.completions.create(
@@ -664,37 +810,25 @@ if st.session_state.df is not None:
     df = st.session_state.df
     context = get_context(df)
     
-    # Animated Header
-    st.markdown('<h1>🧠✨ AI Data Analyst Pro</h1>', unsafe_allow_html=True)
-    st.markdown('<p style="text-align: center; color: white; font-size: 1.3rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); margin-bottom: 30px;">Your Intelligent Data Analysis Companion 🚀</p>', unsafe_allow_html=True)
+    st.markdown('<h1>🧠 AI Data Analyst Pro</h1>', unsafe_allow_html=True)
+    st.markdown('<p style="color: #94A3B8; font-size: 1.1rem; margin-bottom: 2rem;">Your Intelligent Data Analysis Companion</p>', unsafe_allow_html=True)
     
-    # Tabs with Icons
     tab1, tab2, tab3 = st.tabs(["📊 Dataset Overview", "📈 Analysis & Charts", "💬 AI Chatbot"])
     
-    # ==========================================
-    # TAB 1: DATASET OVERVIEW
-    # ==========================================
+    # === TAB 1: DATASET OVERVIEW ===
     with tab1:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("📊 Dataset Summary")
         
         c1, c2, c3, c4 = st.columns(4)
         with c1:
-            st.markdown('<div style="animation: bounceIn 0.6s ease-out;">', unsafe_allow_html=True)
-            st.metric("🔢 Total Rows", f"{df.shape[0]:,}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.metric("Total Rows", f"{df.shape[0]:,}")
         with c2:
-            st.markdown('<div style="animation: bounceIn 0.7s ease-out;">', unsafe_allow_html=True)
-            st.metric("📋 Total Columns", f"{df.shape[1]:,}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.metric("Total Columns", f"{df.shape[1]:,}")
         with c3:
-            st.markdown('<div style="animation: bounceIn 0.8s ease-out;">', unsafe_allow_html=True)
-            st.metric("⚠️ Missing Values", f"{int(df.isnull().sum().sum()):,}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.metric("Missing Values", f"{int(df.isnull().sum().sum()):,}")
         with c4:
-            st.markdown('<div style="animation: bounceIn 0.9s ease-out;">', unsafe_allow_html=True)
-            st.metric("🔄 Duplicate Rows", f"{int(df.duplicated().sum()):,}")
-            st.markdown('</div>', unsafe_allow_html=True)
+            st.metric("Duplicate Rows", f"{int(df.duplicated().sum()):,}")
         
         st.markdown('</div>', unsafe_allow_html=True)
         
@@ -711,13 +845,11 @@ if st.session_state.df is not None:
             st.markdown('</div>', unsafe_allow_html=True)
         with col2:
             st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-            st.subheader("📉 Missing Values per Column")
+            st.subheader("📉 Missing Values")
             st.dataframe(df.isnull().sum().reset_index().rename(columns={'index': 'Column', 0: 'Missing'}))
             st.markdown('</div>', unsafe_allow_html=True)
 
-    # ==========================================
-    # TAB 2: ANALYSIS & CHARTS
-    # ==========================================
+    # === TAB 2: ANALYSIS & CHARTS ===
     with tab2:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("📈 Statistical Analysis")
@@ -725,60 +857,69 @@ if st.session_state.df is not None:
         if not num_df.empty:
             st.dataframe(num_df.describe().round(2), use_container_width=True)
         else:
-            st.info("ℹ️ No numeric columns found for statistical analysis.")
+            st.info("ℹ️ No numeric columns found.")
         st.markdown('</div>', unsafe_allow_html=True)
         
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("🎨 Interactive Visualization")
         
         c1, c2, c3 = st.columns(3)
-        chart_type = c1.selectbox("📊 Chart Type", ["Bar Chart", "Line Chart", "Scatter Plot", "Pie Chart", "Histogram"])
+        chart_type = c1.selectbox("Chart Type", ["Bar Chart", "Line Chart", "Scatter Plot", "Pie Chart", "Histogram"])
         cols = df.columns.tolist()
-        x_col = c2.selectbox("📍 X-Axis", cols)
-        y_col = c3.selectbox("📍 Y-Axis", ["None"] + cols)
+        x_col = c2.selectbox("X-Axis", cols)
+        y_col = c3.selectbox("Y-Axis", ["None"] + cols)
         
         fig = None
         try:
-            if chart_type == "Bar Chart" and y_col != "None": fig = px.bar(df, x=x_col, y=y_col, title=f"{y_col} by {x_col}")
-            elif chart_type == "Line Chart" and y_col != "None": fig = px.line(df, x=x_col, y=y_col, title=f"{y_col} over {x_col}")
-            elif chart_type == "Scatter Plot" and y_col != "None": fig = px.scatter(df, x=x_col, y=y_col, title=f"{y_col} vs {x_col}")
-            elif chart_type == "Pie Chart": fig = px.pie(df, names=x_col, title=f"Distribution of {x_col}")
-            elif chart_type == "Histogram": fig = px.histogram(df, x=x_col, title=f"Distribution of {x_col}")
+            if chart_type == "Bar Chart" and y_col != "None": 
+                fig = px.bar(df, x=x_col, y=y_col, title=f"{y_col} by {x_col}")
+            elif chart_type == "Line Chart" and y_col != "None": 
+                fig = px.line(df, x=x_col, y=y_col, title=f"{y_col} over {x_col}")
+            elif chart_type == "Scatter Plot" and y_col != "None": 
+                fig = px.scatter(df, x=x_col, y=y_col, title=f"{y_col} vs {x_col}")
+            elif chart_type == "Pie Chart": 
+                fig = px.pie(df, names=x_col, title=f"Distribution of {x_col}")
+            elif chart_type == "Histogram": 
+                fig = px.histogram(df, x=x_col, title=f"Distribution of {x_col}")
             
             if fig:
                 fig.update_layout(
-                    template="plotly_white",
-                    plot_bgcolor='rgba(0,0,0,0)',
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font=dict(size=14)
+                    template="plotly_dark",
+                    plot_bgcolor='#111827',
+                    paper_bgcolor='#111827',
+                    font=dict(color='#F8FAFC', size=13),
+                    title_font=dict(size=18, color='#F8FAFC'),
+                    xaxis=dict(gridcolor='#374151'),
+                    yaxis=dict(gridcolor='#374151'),
+                    legend=dict(bgcolor='rgba(0,0,0,0)')
                 )
+                fig.update_traces(marker=dict(color='#7C3AED', line=dict(color='#06B6D4', width=1)))
                 st.plotly_chart(fig, use_container_width=True)
                 
-                if st.button("✨ Explain this Chart with AI"):
-                    with st.spinner("🤖 AI is analyzing the chart..."):
-                        prompt = f"Dataset Context:\n{context}\n\nA {chart_type} was generated with X-axis: '{x_col}' and Y-axis: '{y_col}'. Provide a short, simple explanation of the findings, trends, and business insights from this chart."
+                if st.button("✨ Explain with AI"):
+                    with st.spinner("🤖 AI analyzing..."):
+                        prompt = f"Dataset Context:\n{context}\n\nA {chart_type} was generated with X: '{x_col}' and Y: '{y_col}'. Provide insights."
                         st.session_state.chart_explanation = call_ai(prompt)
                 
                 if st.session_state.chart_explanation:
                     st.markdown('<div class="ai-message">', unsafe_allow_html=True)
-                    st.markdown("💡 **AI Explanation:**")
+                    st.markdown("💡 **AI Insights:**")
                     st.write(st.session_state.chart_explanation)
                     st.markdown('</div>', unsafe_allow_html=True)
             else:
-                st.warning("⚠️ Please select a valid Y-axis for this chart type.")
+                st.warning("⚠️ Please select a valid Y-axis.")
         except Exception as e:
-            st.error(f"❌ Error generating chart: {e}")
+            st.error(f"❌ Error: {e}")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # ==========================================
-    # TAB 3: AI CHATBOT (ChatGPT Style)
-    # ==========================================
+    # === TAB 3: AI CHATBOT ===
     with tab3:
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
         st.header("💬 AI Data Chatbot")
-        st.caption("🤖 ChatGPT-style AI assistant - Apne dataset ke baare mein kuch bhi poochein!")
+        st.caption("🤖 ChatGPT-style assistant - Ask anything about your data!")
+        st.markdown('</div>', unsafe_allow_html=True)
         
-        # Chat Messages Display
+        # Chat Display
         chat_container = st.container()
         with chat_container:
             for message in st.session_state.chat_messages:
@@ -787,11 +928,9 @@ if st.session_state.df is not None:
                 else:
                     st.markdown(f'<div class="ai-message">{message["content"]}</div>', unsafe_allow_html=True)
         
-        st.markdown('</div>', unsafe_allow_html=True)
-        
         # Chat Input
         st.markdown('<div class="chat-input-container">', unsafe_allow_html=True)
-        user_input = st.text_input("", placeholder="💭 Apna sawaal yahan likhein... (e.g., 'Which product has highest sales?')", label_visibility="collapsed")
+        user_input = st.text_input("Ask a question", placeholder="💭 Type your question here...", label_visibility="collapsed", key="chat_input")
         
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
@@ -800,49 +939,45 @@ if st.session_state.df is not None:
         
         # Quick Suggestions
         st.markdown('<div class="glass-card">', unsafe_allow_html=True)
-        st.markdown("### 💡 Quick Suggestions")
+        st.markdown("#### 💡 Quick Questions")
         sug1, sug2, sug3, sug4 = st.columns(4)
         with sug1:
-            if st.button("📊 Top 5 Products", use_container_width=True):
+            if st.button("📊 Top Products", use_container_width=True):
                 user_input = "Top 5 products kya hain?"
                 send_button = True
+                st.session_state.chat_input = user_input
         with sug2:
             if st.button("📈 Sales Trend", use_container_width=True):
                 user_input = "Sales ka trend kya hai?"
                 send_button = True
+                st.session_state.chat_input = user_input
         with sug3:
             if st.button("🏆 Best Customer", use_container_width=True):
                 user_input = "Best customer kaunsa hai?"
                 send_button = True
+                st.session_state.chat_input = user_input
         with sug4:
             if st.button("📉 Missing Data", use_container_width=True):
                 user_input = "Missing data ke baare mein batao"
                 send_button = True
+                st.session_state.chat_input = user_input
         st.markdown('</div>', unsafe_allow_html=True)
         
-        # Process User Input
+        # Process Message
         if send_button and user_input:
-            # Add user message
             st.session_state.chat_messages.append({"role": "user", "content": user_input})
             
-            # Show typing indicator
-            with st.spinner("🤖 AI is thinking..."):
-                time.sleep(0.5)
-                
-                # Get AI response
+            with st.spinner(""):
+                time.sleep(0.3)
                 prompt = f"""Dataset Context:
 {context}
 
 User Question: {user_input}
 
-Provide a clear, accurate, and helpful answer based on the dataset. Be conversational and friendly."""
-                
+Provide a clear, accurate answer based on the dataset. Be conversational."""
                 ai_response = call_ai(prompt)
-                
-                # Add AI response
                 st.session_state.chat_messages.append({"role": "ai", "content": ai_response})
             
-            # Rerun to show new messages
             st.rerun()
 
 else:
@@ -855,7 +990,6 @@ else:
     </div>
     """, unsafe_allow_html=True)
     
-    # Feature Cards
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -880,10 +1014,21 @@ else:
         st.markdown("""
         <div class="feature-card">
             <div class="feature-icon">🎨</div>
-            <div class="feature-title">Beautiful UI</div>
-            <div class="feature-desc">Stunning colorful interface with smooth animations</div>
+            <div class="feature-title">Premium UI</div>
+            <div class="feature-desc">Professional dark theme with smooth animations</div>
         </div>
         """, unsafe_allow_html=True)
     
     st.markdown("---")
-    st.info("👈 Please upload a CSV file from the sidebar to begin your data analysis journey!")
+    st.info("👈 Please upload a CSV file from the sidebar to begin!")
+
+# Download Button
+if st.session_state.df is not None:
+    st.markdown("---")
+    st.download_button(
+        "📥 Download Dataset",
+        st.session_state.df.to_csv(index=False).encode("utf-8"),
+        "dataset.csv",
+        "text/csv",
+        use_container_width=True
+    )
