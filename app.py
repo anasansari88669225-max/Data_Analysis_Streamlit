@@ -1,305 +1,211 @@
-# main.py
-
-import os
-from io import StringIO
-
-import numpy as np
-import pandas as pd
-import plotly.express as px
 import streamlit as st
+import pandas as pd
+import numpy as np
+import plotly.express as px
 from groq import Groq
+import io
 
-st.set_page_config(
-    page_title="AI Data Analysis Assistant",
-    page_icon="📊",
-    layout="wide",
-)
+# --- PAGE CONFIG ---
+st.set_page_config(page_title="AI Data Analyst", page_icon="📊", layout="wide")
 
-st.title("📊 AI Data Analysis Assistant")
-st.caption("Upload a CSV, explore data, visualize insights, filter records, and chat with AI.")
+# --- CUSTOM CSS FOR EXCELLENT UI (Bonus Feature) ---
+st.markdown("""
+    <style>
+    .main .block-container { padding-top: 2rem; max-width: 1200px; }
+    .stMetric { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 10px; border-radius: 8px; }
+    [data-theme="dark"] .stMetric { background-color: #262730; border: 1px solid #333; }
+    .stAlert { border-radius: 8px; }
+    </style>
+""", unsafe_allow_html=True)
 
-if "df" not in st.session_state:
-    st.session_state.df = None
+# --- SESSION STATE ---
+if "df" not in st.session_state: st.session_state.df = None
+if "chart_explanation" not in st.session_state: st.session_state.chart_explanation = None
+if "qa_answers" not in st.session_state: st.session_state.qa_answers = None
 
-if "filtered_df" not in st.session_state:
-    st.session_state.filtered_df = None
+# --- SIDEBAR ---
+with st.sidebar:
+    st.title("📊 AI Data Analyst")
+    st.markdown("---")
+    
+    # 🔥 API PROBLEM FIXED: Sidebar input instead of broken os.environ.get()
+    st.header("🔑 API Configuration")
+    st.caption("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")
+    api_key = st.text_input("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", type="password")
+    if not api_key:
+        st.warning("AI features ke liye API Key zaroori hai.")
+    
+    st.markdown("---")
+    st.header("📁 Upload Dataset")
+    uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+    
+    if uploaded_file:
+        try:
+            st.session_state.df = pd.read_csv(uploaded_file)
+            st.success("✅ Dataset loaded successfully!")
+        except Exception as e:
+            st.error(f"Error loading file: {e}")
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-
-
-def get_statistics(df: pd.DataFrame):
-    numeric_df = df.select_dtypes(include=np.number)
-    if numeric_df.empty:
-        return pd.DataFrame()
-
-    stats = pd.DataFrame({
-        "Mean": numeric_df.mean(),
-        "Median": numeric_df.median(),
-        "Mode": numeric_df.mode().iloc[0],
-        "Std Dev": numeric_df.std(),
-        "Minimum": numeric_df.min(),
-        "Maximum": numeric_df.max(),
-    })
-
-    return stats.round(4)
-
-
-def apply_filters(df: pd.DataFrame):
-    filtered = df.copy()
-
-    st.sidebar.header("Dataset Filters")
-
-    numeric_cols = filtered.select_dtypes(include=np.number).columns.tolist()
-    categorical_cols = filtered.select_dtypes(exclude=np.number).columns.tolist()
-
-    for col in numeric_cols:
-        min_val = float(filtered[col].min())
-        max_val = float(filtered[col].max())
-
-        if min_val != max_val:
-            values = st.sidebar.slider(
-                col,
-                min_value=min_val,
-                max_value=max_val,
-                value=(min_val, max_val),
-            )
-            filtered = filtered[
-                (filtered[col] >= values[0]) &
-                (filtered[col] <= values[1])
-            ]
-
-    for col in categorical_cols:
-        options = filtered[col].dropna().unique().tolist()
-
-        if options:
-            selected = st.sidebar.multiselect(
-                col,
-                options,
-                default=options
-            )
-            filtered = filtered[filtered[col].isin(selected)]
-
-    return filtered
-
-
-def dataset_context(df):
-    stats = get_statistics(df)
-
-    buffer = StringIO()
-    buffer.write("Dataset Summary\n")
-    buffer.write(f"Rows: {df.shape[0]}\n")
-    buffer.write(f"Columns: {df.shape[1]}\n\n")
-
-    buffer.write("Columns:\n")
-    buffer.write(", ".join(df.columns.tolist()))
-    buffer.write("\n\n")
-
-    buffer.write("Data Types:\n")
-    buffer.write(df.dtypes.to_string())
-    buffer.write("\n\n")
-
-    buffer.write("Missing Values:\n")
-    buffer.write(df.isnull().sum().to_string())
-    buffer.write("\n\n")
-
-    buffer.write("Statistics:\n")
-    if not stats.empty:
-        buffer.write(stats.to_string())
-    else:
-        buffer.write("No numeric columns.")
-    buffer.write("\n\n")
-
-    buffer.write("Sample Rows:\n")
-    buffer.write(df.head(10).to_string())
-
+# --- HELPER FUNCTIONS ---
+def get_context(df):
+    """Dataset ka summary AI ko bhejne ke liye"""
+    buffer = io.StringIO()
+    buffer.write(f"Rows: {df.shape[0]}, Columns: {df.shape[1]}\n")
+    buffer.write(f"Columns: {', '.join(df.columns)}\n")
+    buffer.write(f"Missing Values:\n{df.isnull().sum().to_string()}\n")
+    
+    num_cols = df.select_dtypes(include=np.number).columns
+    if len(num_cols) > 0:
+        buffer.write(f"Numeric Stats:\n{df[num_cols].describe().to_string()}\n")
+        
+    cat_cols = df.select_dtypes(exclude=np.number).columns
+    for col in cat_cols:
+        buffer.write(f"Category '{col}' distribution:\n{df[col].value_counts().head(5).to_string()}\n")
+        
+    buffer.write(f"Sample Data:\n{df.head(3).to_string()}")
     return buffer.getvalue()
 
-
-with st.sidebar:
-    st.header("Upload Dataset")
-    uploaded = st.file_uploader("CSV File", type=["csv"])
-
-if uploaded:
+def call_ai(prompt):
+    """Groq API ko call karne ka safe function"""
+    if not api_key:
+        return "⚠️ Please enter your Groq API Key in the sidebar."
     try:
-        df = pd.read_csv(uploaded)
-        st.session_state.df = df
-        st.success("CSV uploaded successfully.")
-    except Exception as e:
-        st.error(str(e))
-
-if st.session_state.df is not None:
-
-    df = st.session_state.df
-    filtered_df = apply_filters(df)
-    st.session_state.filtered_df = filtered_df
-
-    c1, c2, c3, c4 = st.columns(4)
-
-    c1.metric("Rows", filtered_df.shape[0])
-    c2.metric("Columns", filtered_df.shape[1])
-    c3.metric("Missing Values", int(filtered_df.isnull().sum().sum()))
-    c4.metric("Duplicate Rows", int(filtered_df.duplicated().sum()))
-
-    with st.expander("Dataset Preview", expanded=True):
-        st.dataframe(filtered_df, use_container_width=True)
-
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.subheader("Column Names")
-            st.write(filtered_df.columns.tolist())
-
-        with col2:
-            st.subheader("Data Types")
-            st.dataframe(filtered_df.dtypes.astype(str).reset_index().rename(
-                columns={"index": "Column", 0: "Type"}
-            ))
-
-        st.subheader("Missing Values")
-        st.dataframe(filtered_df.isnull().sum().reset_index().rename(
-            columns={"index": "Column", 0: "Missing"}
-        ))
-
-    with st.expander("Statistics", expanded=True):
-        stats = get_statistics(filtered_df)
-
-        if stats.empty:
-            st.info("No numeric columns found.")
-        else:
-            st.dataframe(stats, use_container_width=True)
-
-    with st.container():
-
-        st.subheader("Interactive Charts")
-
-        chart = st.selectbox(
-            "Chart Type",
-            [
-                "Bar Chart",
-                "Line Chart",
-                "Scatter Plot",
-                "Histogram",
-                "Pie Chart",
-                "Box Plot",
+        client = Groq(api_key=api_key)
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile", # Fast aur free model
+            messages=[
+                {"role": "system", "content": "You are an expert business data analyst. Provide clear, concise, and accurate answers based ONLY on the provided data context."},
+                {"role": "user", "content": prompt}
             ],
+            temperature=0.3
         )
+        return response.choices[0].message.content
+    except Exception as e:
+        return f"❌ API Error: {str(e)}"
 
-        cols = filtered_df.columns.tolist()
+# --- MAIN APP ---
+if st.session_state.df is not None:
+    df = st.session_state.df
+    context = get_context(df)
+    
+    # Excellent UI ke liye Tabs ka istemal
+    tab1, tab2, tab3 = st.tabs(["📊 1. Dataset Overview", "📈 2. Analysis & Charts", "🤖 3. AI Q&A (Judges)"])
+    
+    # ==========================================
+    # TAB 1: DATASET OVERVIEW (Step 1)
+    # ==========================================
+    with tab1:
+        st.header("Dataset Summary")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("Total Rows", df.shape[0])
+        c2.metric("Total Columns", df.shape[1])
+        c3.metric("Missing Values", int(df.isnull().sum().sum()))
+        c4.metric("Duplicate Rows", int(df.duplicated().sum()))
+        
+        with st.expander("View Full Dataset", expanded=False):
+            st.dataframe(df, use_container_width=True)
+            
+        col1, col2 = st.columns(2)
+        with col1:
+            st.subheader("Data Types")
+            st.dataframe(df.dtypes.astype(str).reset_index().rename(columns={'index': 'Column', 0: 'Type'}))
+        with col2:
+            st.subheader("Missing Values per Column")
+            st.dataframe(df.isnull().sum().reset_index().rename(columns={'index': 'Column', 0: 'Missing'}))
 
-        x = st.selectbox("X Column", cols)
-
-        y = st.selectbox(
-            "Y Column",
-            ["None"] + cols
-        )
-
-        fig = None
-
-        if chart == "Bar Chart":
-            if y != "None":
-                fig = px.bar(filtered_df, x=x, y=y)
-
-        elif chart == "Line Chart":
-            if y != "None":
-                fig = px.line(filtered_df, x=x, y=y)
-
-        elif chart == "Scatter Plot":
-            if y != "None":
-                fig = px.scatter(filtered_df, x=x, y=y)
-
-        elif chart == "Histogram":
-            fig = px.histogram(filtered_df, x=x)
-
-        elif chart == "Pie Chart":
-            fig = px.pie(filtered_df, names=x)
-
-        elif chart == "Box Plot":
-            if y != "None":
-                fig = px.box(filtered_df, x=x, y=y)
-
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
-
-    st.subheader("🤖 AI Assistant")
-
-    for msg in st.session_state.messages:
-        with st.chat_message(msg["role"]):
-            st.markdown(msg["content"])
-
-    question = st.text_input("Ask about your dataset")
-
-    if st.button("Ask AI"):
-
-        if not question.strip():
-            st.error("Please enter a question.")
-
+    # ==========================================
+    # TAB 2: ANALYSIS & CHARTS (Step 2, 4, 5)
+    # ==========================================
+    with tab2:
+        st.header("Statistical Analysis")
+        num_df = df.select_dtypes(include=np.number)
+        if not num_df.empty:
+            st.dataframe(num_df.describe().round(2), use_container_width=True)
         else:
-            api_key = os.environ.get("GROQ_API_KEY")
-
-            if not api_key:
-                st.error("GROQ_API_KEY environment variable not found.")
-
+            st.info("No numeric columns found for statistical analysis.")
+            
+        st.markdown("---")
+        st.header("Interactive Visualization")
+        
+        c1, c2, c3 = st.columns(3)
+        chart_type = c1.selectbox("Chart Type", ["Bar Chart", "Line Chart", "Scatter Plot", "Pie Chart", "Histogram"])
+        cols = df.columns.tolist()
+        x_col = c2.selectbox("X-Axis", cols)
+        y_col = c3.selectbox("Y-Axis", ["None"] + cols)
+        
+        fig = None
+        try:
+            # Chart generation logic
+            if chart_type == "Bar Chart" and y_col != "None": fig = px.bar(df, x=x_col, y=y_col, title=f"{y_col} by {x_col}")
+            elif chart_type == "Line Chart" and y_col != "None": fig = px.line(df, x=x_col, y=y_col, title=f"{y_col} over {x_col}")
+            elif chart_type == "Scatter Plot" and y_col != "None": fig = px.scatter(df, x=x_col, y=y_col, title=f"{y_col} vs {x_col}")
+            elif chart_type == "Pie Chart": fig = px.pie(df, names=x_col, title=f"Distribution of {x_col}")
+            elif chart_type == "Histogram": fig = px.histogram(df, x=x_col, title=f"Distribution of {x_col}")
+            
+            if fig:
+                fig.update_layout(template="plotly_white") # Clean layout
+                st.plotly_chart(fig, use_container_width=True)
+                
+                # Step 5: Explain Result with AI
+                if st.button("✨ Explain this Chart with AI"):
+                    with st.spinner("AI is analyzing the chart..."):
+                        prompt = f"Dataset Context:\n{context}\n\nA {chart_type} was generated with X-axis: '{x_col}' and Y-axis: '{y_col}'. Provide a short, simple explanation of the findings, trends, and business insights from this chart."
+                        st.session_state.chart_explanation = call_ai(prompt)
+                
+                if st.session_state.chart_explanation:
+                    st.info("💡 **AI Explanation:**")
+                    st.write(st.session_state.chart_explanation)
             else:
-                client = Groq(api_key=api_key)
+                st.warning("Please select a valid Y-axis for this chart type.")
+        except Exception as e:
+            st.error(f"Error generating chart: {e}")
 
-                context = dataset_context(filtered_df)
+    # ==========================================
+    # TAB 3: AI Q&A FOR JUDGES (Step 3)
+    # ==========================================
+    with tab3:
+        st.header("🤖 AI Data Assistant (For Judges)")
+        st.caption("Judges yahan 3 fixed questions pooch sakte hain. AI dataset analyze kar ke jawab dega.")
+        
+        # 3 Questions Inputs
+        q1 = st.text_area("Question 1", placeholder="e.g., Which product generated the highest sales?", height=70)
+        q2 = st.text_area("Question 2", placeholder="e.g., What is the average age of customers?", height=70)
+        q3 = st.text_area("Question 3", placeholder="e.g., Which city has the maximum orders?", height=70)
+        
+        if st.button("🚀 Analyze All Questions"):
+            if not any([q1, q2, q3]):
+                st.warning("Please enter at least one question.")
+            else:
+                with st.spinner("AI is analyzing the dataset and answering questions..."):
+                    # Single API call for all 3 questions (Saves time and API limits)
+                    prompt = f"""
+                    You are an expert data analyst. 
+                    Dataset Context:
+                    {context}
+                    
+                    The judges have asked the following questions:
+                    1. {q1 if q1 else "No question"}
+                    2. {q2 if q2 else "No question"}
+                    3. {q3 if q3 else "No question"}
+                    
+                    Provide clear, accurate, and concise answers to each question based STRICTLY on the data context. Format with clear headings for each question.
+                    """
+                    st.session_state.qa_answers = call_ai(prompt)
+                    
+        if st.session_state.qa_answers:
+            st.markdown("---")
+            st.subheader("📝 AI Answers:")
+            st.write(st.session_state.qa_answers)
+            
+        st.markdown("---")
+        # Bonus Feature: Export Data
+        st.download_button(
+            "📥 Download Cleaned Dataset (CSV)",
+            df.to_csv(index=False).encode("utf-8"),
+            "cleaned_dataset.csv",
+            "text/csv"
+        )
 
-                prompt = f"""
-You are a senior business data analyst.
-
-Dataset Information:
-
-{context}
-
-User Question:
-{question}
-
-Provide:
-- Clear business insights
-- Trends
-- Risks
-- Opportunities
-- Recommendations
-"""
-
-                st.session_state.messages.append(
-                    {"role": "user", "content": question}
-                )
-
-                with st.spinner("Analyzing..."):
-                    response = client.chat.completions.create(
-                        model="llama-3.3-70b-versatile",
-                        messages=[
-                            {
-                                "role": "system",
-                                "content": "You are an expert business data analyst."
-                            },
-                            {
-                                "role": "user",
-                                "content": prompt
-                            }
-                        ]
-                    )
-
-                answer = response.choices[0].message.content
-
-                st.session_state.messages.append(
-                    {
-                        "role": "assistant",
-                        "content": answer
-                    }
-                )
-
-                st.rerun()
-
-    st.subheader("Export")
-
-    csv = filtered_df.to_csv(index=False).encode("utf-8")
-
-    st.download_button(
-        "Download Cleaned CSV",
-        csv,
-        "cleaned_dataset.csv",
-        "text/csv"
-    )
+else:
+    st.title("👋 Welcome to AI Data Analysis Assistant")
+    st.info("Please upload a CSV file from the sidebar to begin.")
