@@ -1,0 +1,6 @@
+{
+  "name": "FaceAttendance Pro - Biometric Attendance System",
+  "description": "Enterprise-grade facial recognition attendance system featuring light Neumorphic UI, real-time webcam & photo verification, duplicate prevention, and workforce analytics.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
