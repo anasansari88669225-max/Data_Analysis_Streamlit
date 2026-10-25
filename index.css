@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-base: #E8EEF5;
+    --neu-light: #FFFFFF;
+    --neu-dark: #CAD4E2;
+    --neu-accent: #2563EB;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: #1E293B;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Light Neumorphism Custom Utilities */
+.neu-surface {
+  background-color: #E8EEF5;
+  box-shadow: 6px 6px 14px #CAD4E2, -6px -6px 14px #FFFFFF;
+  border-radius: 1rem;
+}
+
+.neu-surface-sm {
+  background-color: #E8EEF5;
+  box-shadow: 3px 3px 8px #CAD4E2, -3px -3px 8px #FFFFFF;
+  border-radius: 0.75rem;
+}
+
+.neu-surface-lg {
+  background-color: #E8EEF5;
+  box-shadow: 10px 10px 22px #CAD4E2, -10px -10px 22px #FFFFFF;
+  border-radius: 1.25rem;
+}
+
+.neu-inset {
+  background-color: #E2E8F1;
+  box-shadow: inset 3px 3px 6px #CAD4E2, inset -3px -3px 6px #FFFFFF;
+  border-radius: 0.75rem;
+}
+
+.neu-inset-field {
+  background-color: #E4EAF3;
+  box-shadow: inset 2px 2px 5px #CAD4E2, inset -2px -2px 5px #FFFFFF;
+  border-radius: 0.625rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.neu-inset-field:focus {
+  outline: none;
+  box-shadow: inset 2px 2px 5px #B8C4D4, inset -2px -2px 5px #FFFFFF, 0 0 0 2px rgba(37, 99, 235, 0.4);
+}
+
+.neu-btn {
+  background-color: #E8EEF5;
+  box-shadow: 4px 4px 10px #CAD4E2, -4px -4px 10px #FFFFFF;
+  border-radius: 0.75rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.neu-btn:hover {
+  box-shadow: 5px 5px 12px #BDCADB, -5px -5px 12px #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.neu-btn:active {
+  box-shadow: inset 3px 3px 6px #CAD4E2, inset -3px -3px 6px #FFFFFF;
+  transform: translateY(0);
+}
+
+.neu-btn-primary {
+  background-color: #2563EB;
+  color: #FFFFFF;
+  box-shadow: 4px 4px 12px rgba(37, 99, 235, 0.35), -2px -2px 8px rgba(255, 255, 255, 0.9);
+  border-radius: 0.75rem;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.neu-btn-primary:hover {
+  background-color: #1D4ED8;
+  box-shadow: 5px 5px 16px rgba(37, 99, 235, 0.45), -2px -2px 8px #FFFFFF;
+  transform: translateY(-1px);
+}
+
+.neu-btn-primary:active {
+  background-color: #1E40AF;
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.35);
+  transform: translateY(0);
+}
+
+.neu-tab-active {
+  background-color: #DFE6F0;
+  box-shadow: inset 3px 3px 6px #CAD4E2, inset -3px -3px 6px #FFFFFF;
+  color: #2563EB;
+  font-weight: 600;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #E8EEF5;
+}
+::-webkit-scrollbar-thumb {
+  background: #CAD4E2;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B0BFD3;
+}
