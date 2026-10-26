@@ -12,6 +12,6 @@ records = repo.get_attendance_records()
 
 if records:
     df = pd.DataFrame(records)
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, width="stretch")
 else:
     st.info("No attendance records logged in the database.")

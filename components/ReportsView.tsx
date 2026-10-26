@@ -58,6 +58,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ records, settings }) =
   const webcamCount = filteredRecords.filter((r) => r.captureMethod === 'webcam').length;
   const photoUploadCount = filteredRecords.filter((r) => r.captureMethod === 'photo_upload').length;
   const manualCount = filteredRecords.filter((r) => r.captureMethod === 'manual_override').length;
+  const demoCount = filteredRecords.filter((r) => r.captureMethod === 'demo_simulation').length;
 
   const handleExportCsv = () => {
     const csvData = generateAttendanceCsv(filteredRecords);
@@ -154,7 +155,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ records, settings }) =
       </div>
 
       {/* KPI Overview for Filtered Window */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="neu-surface p-4 text-center">
           <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Records</span>
           <div className="text-2xl font-extrabold text-slate-900 tabular-nums mt-1">{totalEntries}</div>
@@ -172,6 +173,10 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ records, settings }) =
           <div className="text-2xl font-extrabold text-amber-600 tabular-nums mt-1">
             {photoUploadCount + manualCount}
           </div>
+        </div>
+        <div className="neu-surface p-4 text-center">
+          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Synthetic Demo</span>
+          <div className="text-2xl font-extrabold text-indigo-600 tabular-nums mt-1">{demoCount}</div>
         </div>
       </div>
 

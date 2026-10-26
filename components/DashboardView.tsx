@@ -120,7 +120,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             {totalActive}
           </div>
           <div className="mt-1 text-xs text-slate-500">
-            Registered biometric profiles
+            Registered employees
           </div>
         </div>
 

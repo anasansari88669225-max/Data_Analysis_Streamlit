@@ -9,6 +9,7 @@ import {
   KeyRound,
   ShieldAlert,
   Info,
+  UserCheck,
 } from 'lucide-react';
 import { Employee, AttendanceRecord, SystemSettings, MatchResult } from '../types';
 import {
@@ -116,9 +117,9 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
       setMatchResult(null);
       setAttendanceMessage({
         type: 'info',
-        title: 'Facial Recognition Not Configured',
+        title: 'Camera Photo Captured',
         description:
-          'The camera image was captured, but this build has no face-embedding model. No employee was matched and no attendance was recorded.',
+          'This demo does not analyze faces. Choose an active employee under Synthetic Demo Check-in below to try the attendance flow; your camera photo will not be used to identify anyone.',
       });
       setIsProcessing(false);
     } else {
@@ -147,9 +148,9 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
       setMatchResult(null);
       setAttendanceMessage({
         type: 'info',
-        title: 'Facial Recognition Not Configured',
+        title: 'Photo Loaded',
         description:
-          'The image was loaded, but this build has no face-embedding model. No employee was matched and no attendance was recorded.',
+          'This demo does not analyze faces. Choose an active employee under Synthetic Demo Check-in below to try the attendance flow; your photo will not be used to identify anyone.',
       });
     };
     reader.readAsDataURL(file);
@@ -158,7 +159,7 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
   // Execute biometric match & record
   const executeBiometricMatch = (
     forcedEmployeeId: string,
-    method: 'webcam' | 'photo_upload' = 'webcam'
+    method: 'webcam' | 'photo_upload' | 'demo_simulation' = 'demo_simulation'
   ) => {
     setIsProcessing(true);
 
@@ -183,8 +184,8 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
         onRecordAdded(saveRes.record);
         setAttendanceMessage({
           type: 'success',
-          title: 'Attendance Verified Successfully',
-          description: `Welcome, ${match.employee.fullName}! Check-in recorded at ${saveRes.record.checkInTimeFormatted} (${settings.timezone}).`,
+          title: 'Demo Check-in Recorded',
+          description: `A synthetic demo check-in was recorded for ${match.employee.fullName} at ${saveRes.record.checkInTimeFormatted} (${settings.timezone}). No face was recognized; this record is flagged for review.`,
         });
       } else {
         setAttendanceMessage({
@@ -427,9 +428,9 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
               <div className="flex items-start gap-3 p-3.5 neu-surface-sm text-xs text-amber-800 bg-[#E8EEF5]">
                 <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <div className="font-bold">Facial Recognition Is Not Configured</div>
+                  <div className="font-bold">Photo Preview Only</div>
                   <div className="text-[11px] text-slate-600 mt-0.5 leading-relaxed">
-                    This demo cannot extract or verify a face from an uploaded photo. Uploading an image will not record attendance.
+                    This demo does not analyze the uploaded image. To try the attendance flow, select a synthetic demo profile below.
                   </div>
                 </div>
               </div>
@@ -486,7 +487,7 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
                     type="text"
                     value={manualEmpId}
                     onChange={(e) => setManualEmpId(e.target.value.toUpperCase())}
-                    placeholder="e.g. EMP-101"
+                    placeholder="e.g. EMP-001"
                     className="w-full px-4 py-2.5 text-xs neu-inset-field"
                     required
                   />
@@ -530,42 +531,37 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
             </form>
           )}
 
-          {/* Quick Simulation Bar for Evaluators and Testing */}
+          {/* Synthetic demo matches do not analyze the captured image. */}
           <div className="pt-4 border-t border-[#D6E0EC]/70 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                Simulation Test Probes (Immediate Verification)
+                Synthetic Demo Check-in
               </span>
-              <span className="text-[10px] text-slate-500">Evaluator utility</span>
+              <span className="text-[10px] text-slate-500">Image is not analyzed</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <p className="text-[11px] text-slate-500">
+              Select an employee to simulate a check-in with their synthetic demo profile. This does not verify the person in the photo.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              {employees.filter((employee) => employee.isActive && employee.faceEmbedding).map((employee) => (
+                <button
+                  key={employee.employeeId}
+                  onClick={() => executeBiometricMatch(employee.employeeId)}
+                  disabled={isProcessing}
+                  className="neu-btn px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 truncate disabled:opacity-50"
+                  title={`Record a synthetic demo check-in for ${employee.fullName} (${employee.employeeId})`}
+                >
+                  <UserCheck className="inline w-3.5 h-3.5 mr-1" aria-hidden="true" />
+                  {employee.fullName} ({employee.employeeId})
+                </button>
+              ))}
               <button
-                onClick={() => executeBiometricMatch('EMP-101', activeMode === 'upload' ? 'photo_upload' : 'webcam')}
-                className="neu-btn px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 truncate"
-                title="Test with Sarah Chen (EMP-101)"
-              >
-                Sarah (EMP-101)
-              </button>
-              <button
-                onClick={() => executeBiometricMatch('EMP-102', activeMode === 'upload' ? 'photo_upload' : 'webcam')}
-                className="neu-btn px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 truncate"
-                title="Test with David Kim (EMP-102)"
-              >
-                David (EMP-102)
-              </button>
-              <button
-                onClick={() => executeBiometricMatch('EMP-103', activeMode === 'upload' ? 'photo_upload' : 'webcam')}
-                className="neu-btn px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 truncate"
-                title="Test with Priya Sharma (EMP-103)"
-              >
-                Priya (EMP-103)
-              </button>
-              <button
-                onClick={() => executeBiometricMatch('STRANGER-999', activeMode === 'upload' ? 'photo_upload' : 'webcam')}
+                onClick={() => executeBiometricMatch('STRANGER-999')}
+                disabled={isProcessing}
                 className="neu-btn px-2.5 py-1.5 text-[11px] font-semibold text-rose-700 truncate"
-                title="Test with Unregistered Face"
+                title="Test an unmatched synthetic demo profile"
               >
-                Unknown Person
+                Unknown Demo Profile
               </button>
             </div>
           </div>
@@ -611,8 +607,8 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
           {/* Biometric Diagnostic Card */}
           <div className="neu-surface p-6 space-y-4">
             <div className="border-b border-[#D6E0EC]/60 pb-3">
-              <h3 className="text-sm font-bold text-slate-900">Biometric Decision Engine</h3>
-              <p className="text-xs text-slate-500 mt-0.5">Vector similarity metrics & threshold</p>
+              <h3 className="text-sm font-bold text-slate-900">Synthetic Demo Match</h3>
+              <p className="text-xs text-slate-500 mt-0.5">Demo vector metrics only; captured photos are not analyzed</p>
             </div>
 
             {matchResult ? (
@@ -647,7 +643,7 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
                 ) : (
                   <div className="p-4 neu-inset text-center space-y-2">
                     <XCircle className="w-8 h-8 text-rose-500 mx-auto" />
-                    <div className="text-xs font-bold text-slate-800">No Valid Match Detected</div>
+                    <div className="text-xs font-bold text-slate-800">No Demo Profile Matched</div>
                     <div className="text-[11px] text-slate-500">
                       Calculated distance exceeds acceptable matching threshold.
                     </div>
@@ -681,7 +677,7 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
                         matchResult.matched ? 'text-emerald-600' : 'text-rose-600'
                       }`}
                     >
-                      {matchResult.matched ? 'Verified' : 'Rejected'}
+                      {matchResult.matched ? 'Demo Match' : 'No Match'}
                     </span>
                   </div>
                 </div>
@@ -689,7 +685,7 @@ export const MarkAttendanceView: React.FC<MarkAttendanceViewProps> = ({
             ) : (
               <div className="py-10 text-center text-xs text-slate-500 space-y-2">
                 <Camera className="w-8 h-8 mx-auto text-slate-400" />
-                <p>Initiate a camera capture or test probe to view real-time biometric metrics.</p>
+                <p>Capture a photo, then select a synthetic demo profile to try the check-in flow.</p>
               </div>
             )}
           </div>

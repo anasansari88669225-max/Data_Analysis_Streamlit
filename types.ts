@@ -14,7 +14,7 @@ export interface Employee {
   updatedAt: string;
 }
 
-export type CaptureMethod = 'webcam' | 'photo_upload' | 'manual_override';
+export type CaptureMethod = 'webcam' | 'photo_upload' | 'manual_override' | 'demo_simulation';
 
 export type ReviewStatus = 'verified' | 'under_review' | 'manually_approved';
 

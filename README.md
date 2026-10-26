@@ -1,20 +1,10 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# FaceAttendance Pro demo
 
-# Run and deploy your AI Studio app
+This repository includes two local demos. The Python app requires Python 3.10 or later.
 
-This contains everything you need to run your app locally.
+- **React preview:** run `npm install`, then `npm run dev` and open `http://localhost:3000`.
+- **Streamlit app:** install Python dependencies with `python -m pip install -r requirements.txt`, then run `streamlit run app.py` and open `http://localhost:8501`.
 
-View your app in AI Studio: https://ai.studio/apps/f3af281d-6711-4338-8853-322f4d04c0d0
+The Streamlit app stores data in a local SQLite `attendance.db` file. Set `ATTENDANCE_DB_PATH` to use a different database location.
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Prototype notice:** this project does not perform facial recognition. Registration and simulated matching use synthetic vectors; camera and photo uploads do not verify identity. Do not use this demo for biometric security or payroll decisions.

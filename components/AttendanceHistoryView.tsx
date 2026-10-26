@@ -25,7 +25,7 @@ export const AttendanceHistoryView: React.FC<AttendanceHistoryViewProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [dateFilter, setDateFilter] = useState<'ALL' | 'TODAY' | 'YESTERDAY' | 'LAST7'>('ALL');
-  const [methodFilter, setMethodFilter] = useState<'ALL' | 'webcam' | 'photo_upload' | 'manual_override'>('ALL');
+  const [methodFilter, setMethodFilter] = useState<'ALL' | 'webcam' | 'photo_upload' | 'manual_override' | 'demo_simulation'>('ALL');
   const [deptFilter, setDeptFilter] = useState('ALL');
 
   const todayStr = getLocalCalendarDate(new Date(), settings.timezone);
@@ -111,13 +111,14 @@ export const AttendanceHistoryView: React.FC<AttendanceHistoryViewProps> = ({
           <div>
             <select
               value={methodFilter}
-              onChange={(e) => setMethodFilter(e.target.value as 'ALL' | 'webcam' | 'photo_upload' | 'manual_override')}
+              onChange={(e) => setMethodFilter(e.target.value as 'ALL' | 'webcam' | 'photo_upload' | 'manual_override' | 'demo_simulation')}
               className="w-full px-3 py-2 text-xs neu-inset-field bg-[#E4EAF3] cursor-pointer"
             >
               <option value="ALL">All Capture Methods</option>
               <option value="webcam">Live Webcam</option>
               <option value="photo_upload">Photo Upload</option>
               <option value="manual_override">Manual Override</option>
+              <option value="demo_simulation">Synthetic Demo</option>
             </select>
           </div>
 
@@ -188,6 +189,8 @@ export const AttendanceHistoryView: React.FC<AttendanceHistoryViewProps> = ({
                           <Camera className="w-3.5 h-3.5 text-blue-600" />
                         ) : rec.captureMethod === 'photo_upload' ? (
                           <Upload className="w-3.5 h-3.5 text-amber-600" />
+                        ) : rec.captureMethod === 'demo_simulation' ? (
+                          <Check className="w-3.5 h-3.5 text-blue-600" />
                         ) : (
                           <KeyRound className="w-3.5 h-3.5 text-slate-500" />
                         )}

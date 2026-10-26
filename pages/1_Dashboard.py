@@ -36,6 +36,6 @@ if today_records:
     df = pd.DataFrame(today_records)
     cols = ["employee_name", "employee_id", "department", "check_in_time_formatted", "capture_method", "confidence_score", "review_status"]
     present_cols = [c for c in cols if c in df.columns]
-    st.dataframe(df[present_cols], use_container_width=True)
+    st.dataframe(df[present_cols], width="stretch")
 else:
     st.info("No attendance records logged yet for today.")

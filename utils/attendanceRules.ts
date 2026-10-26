@@ -57,7 +57,10 @@ export function createAttendanceRecord(
       distance: match.distance,
       captureMethod,
       confidenceScore: Math.round(match.confidence),
-      reviewStatus: captureMethod === 'manual_override' ? 'under_review' : 'verified',
+      reviewStatus:
+        captureMethod === 'manual_override' || captureMethod === 'demo_simulation'
+          ? 'under_review'
+          : 'verified',
       notes,
     },
   };

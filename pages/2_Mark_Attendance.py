@@ -35,7 +35,10 @@ with tab_upload:
             )
 
 with tab_test:
-    st.markdown("Test instant biometric verification against active employee database records.")
+    st.markdown(
+        "Try a synthetic demo-vector match against active employees. This is not "
+        "facial recognition and does not analyze camera or uploaded photos."
+    )
     active = repo.get_active_employees()
     if active:
         options = {f"{e['full_name']} ({e['employee_id']})": e for e in active}
